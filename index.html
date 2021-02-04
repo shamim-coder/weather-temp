@@ -80,9 +80,10 @@
                 const icon = data.weather[0].icon
                 document.getElementById('weather-icon').src = `https://openweathermap.org/img/wn/${icon}@2x.png`
                 const location = data.name
+                const country = data.sys.country
                 const temp = data.main.temp
                 const weather = data.weather[0].main
-                document.getElementById('location').innerText = location
+                document.getElementById('location').innerText = `${location}, ${country}`
                 document.getElementById('temp').innerText = Math.round(temp).toFixed(0)
                 document.getElementById('weather').innerText = weather
             }
