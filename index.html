@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Temperature Hot</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+        #cel {
+            display: none;
+        }
+        #celsius-btn {
+            border: none;
+        }
+        #fahrenheit-btn {
+            border: none
+        }
+        #weather {
+            margin-top: 10px
+        }
+        .temp {
+            font-size: 50px
+        }
+        .temp-btn-style {
+            color: #ffffff;
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input id="search" type="text" class="form-control" placeholder="Enter a location for Weather ...">
+                <div class="input-group-append">
+                    <button id="searchBtn" type="button" class="btn btn-danger">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img id="weather-icon" src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <h1 id="location">Dhaka</h1>
+            <h3 class="temp">
+                <span id="temp">38</span>
+                <span id="celsius">°C</span>
+                <span id="fahrenheit">°F</span>
+            </h3>
+            <button disabled='disabled' id="celsius-btn">°C</button><button id="fahrenheit-btn">°F</button>
+
+            <h1 id="weather" class="lead">Clouds</h1>
+        </div>
+    </div>
+
+
+
+    <script>
+
+
+        document.getElementById('searchBtn').addEventListener('click', function () {
+            const city = document.getElementById('search').value
+            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=42a2f98a930a88257320454f61a6562d`)
+                .then((response) => response.json())
+                .then((data) => weatherMap(data))
+
+            function weatherMap(data) {
+                console.log(data);
+                const icon = data.weather[0].icon
+                document.getElementById('weather-icon').src = `https://openweathermap.org/img/wn/${icon}@2x.png`
+                const location = data.name
+                const temp = data.main.temp
+                const weather = data.weather[0].main
+                document.getElementById('location').innerText = location
+                document.getElementById('temp').innerText = Math.round(temp).toFixed(0)
+                document.getElementById('weather').innerText = weather
+            }
+        })
+        
+
+
+        document.getElementById('fahrenheit-btn').addEventListener('click', function () {
+            //(23°C × 9/5) + 32
+            const currentTempValue = document.getElementById('temp').innerText
+            const convertToFahrenheit = (currentTempValue * 9 / 5) + 32
+            document.getElementById('temp').innerText = convertToFahrenheit.toFixed(0)
+            this.setAttribute('disabled', 'disabled')
+            document.getElementById('celsius-btn').removeAttribute('disabled', 'disabled')
+            document.getElementById('celsius').style.display = "none"
+            document.getElementById('fahrenheit').style.display = "inline-block"
+            document.getElementById('fahrenheit-btn').classList.add('temp-btn-style')
+            document.getElementById('celsius-btn').classList.remove('temp-btn-style')
+
+        })
+
+
+        document.getElementById('celsius-btn').addEventListener('click', function () {
+            //  (73°F − 32) × 5/9
+            const currentTempValue = document.getElementById('temp').innerText
+            const convertToFahrenheit = (currentTempValue - 32) * 5 / 9
+            document.getElementById('temp').innerText = convertToFahrenheit.toFixed(0)
+            this.setAttribute('disabled', 'disabled')
+            document.getElementById('fahrenheit-btn').removeAttribute('disabled', 'disabled')
+            document.getElementById('celsius').style.display = "inline-block"
+            document.getElementById('fahrenheit').style.display = "none"
+            document.getElementById('celsius-btn').classList.add('temp-btn-style')
+            document.getElementById('fahrenheit-btn').classList.remove('temp-btn-style')
+        })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // document.getElementById('searchBtn').addEventListener('click', function(){
+        //     const temp = document.getElementById('temp')
+        //     const weather = document.getElementById('weather')
+        //     const weatherIcon = document.getElementById('weather-icon')
+
+
+        //     const url = 'https://api.openweathermap.org/data/2.5/weather'
+        //     const api = '42a2f98a930a88257320454f61a6562d'
+
+        //     let unit = 'metric'
+
+        //     const city = document.getElementById('search').value
+
+        //     fetch(`${url}?q=${city}&units=${unit}&appid=${api}`)
+        //         .then((response) => response.json())
+        //         .then((data) => weatherData(data))
+
+        //     function weatherData(info){
+        //         console.log(info);
+        //         document.getElementById('location').innerText = info.name
+        //         temp.innerText = info.main.feels_like
+        //         weather.innerText = info.weather[0].main
+        //         const icon = info.weather[0].icon
+        //         weatherIcon.src = `https://openweathermap.org/img/wn/${icon}@2x.png`
+
+        //     }
+
+
+        // })
+
+    </script>
+
+</body>
+
+</html>
